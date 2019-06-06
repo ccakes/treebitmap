@@ -284,7 +284,7 @@ impl<T: Sized> TreeBitmap<T> {
 
     /// Remove prefix. Returns existing value if the prefix previously existed.
     pub fn remove(&mut self, nibbles: &[u8], masklen: u32) -> Option<T> {
-        debug_assert!(nibbles.len() >= (masklen / 4) as usize);
+        assert!(nibbles.len() >= (masklen / 4) as usize);
         let root_hdl = self.root_handle();
         let mut root_node = *self.trienodes.get(&root_hdl, 0);
         let ret = self.remove_child(&mut root_node, nibbles, masklen);
