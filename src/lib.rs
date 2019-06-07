@@ -118,8 +118,8 @@ where
     /// // Remove non-existant
     /// assert_eq!(table.remove(prefix, masklen), None);
     /// ```
-    pub fn remove(&mut self, ip: A, masklen: u32) -> Option<T> {
-        self.inner.remove(&ip.nibbles().as_ref(), masklen)
+    pub fn remove(&mut self, ip: A, masklen: u32, debug: bool) -> Option<T> {
+        self.inner.remove(&ip.nibbles().as_ref(), masklen, debug)
     }
 
     /// Perform exact match lookup of `ip`/`masklen` and return the
