@@ -283,17 +283,21 @@ impl<T: Sized> TreeBitmap<T> {
     }
 
     /// Remove prefix. Returns existing value if the prefix previously existed.
-    pub fn remove(&mut self, nibbles: &[u8], masklen: u32) -> Option<T> {
+    pub fn remove(&mut self, nibbles: &[u8], masklen: u32, debug: bool) -> Option<T> {
         assert!(nibbles.len() >= (masklen / 4) as usize);
         let root_hdl = self.root_handle();
         let mut root_node = *self.trienodes.get(&root_hdl, 0);
-        let ret = self.remove_child(&mut root_node, nibbles, masklen);
+        let ret = self.remove_child(&mut root_node, nibbles, masklen, debug);
         self.trienodes.set(&root_hdl, 0, root_node);
         ret
     }
 
     // remove child and result from node
-    fn remove_child(&mut self, node: &mut Node, nibbles: &[u8], masklen: u32) -> Option<T> {
+    fn remove_child(&mut self, node: &mut Node, nibbles: &[u8], masklen: u32, debug: bool) -> Option<T> {
+        if debug == true {
+            eprintln!("{:?} | {}", nibbles, masklen);
+        }
+
         let nibble = nibbles[0];
         let bitmap = node::gen_bitmap(nibble, cmp::min(masklen, 4)) & node::END_BIT_MASK;
         let reached_final_node = masklen < 4 || (node.is_endnode() && masklen == 4);
