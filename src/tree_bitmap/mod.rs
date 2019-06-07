@@ -320,7 +320,7 @@ impl<T: Sized> TreeBitmap<T> {
 
         if let MatchResult::Chase(mut child_node_hdl, index) = node.match_external(bitmap) {
             let mut child_node = *self.trienodes.get(&child_node_hdl, index);
-            let ret = self.remove_child(&mut child_node, &nibbles[1..], masklen - 4);
+            let ret = self.remove_child(&mut child_node, &nibbles[1..], masklen - 4, debug);
 
             if child_node.child_count() == 0 && !child_node.is_endnode() {
                 child_node.make_endnode();
